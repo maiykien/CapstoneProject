@@ -51,5 +51,10 @@ We will prepare/produce a report with the following deliverable:
   * 4. A summary of your analysis
   * 5. Supporting visualizations and key findings
   * 6. Your top three recommendations based on your analysis
-   
-  * 
+
+  Can you click <a href= "https://github.com/maiykien/CapstoneProject/blob/main/Case-Study-Bike-Share-Navigate.Rmd"> here </a> to see my Analysis about my capstone project? 
+
+
+Case-Study-Bike-Share Navigate
+
+

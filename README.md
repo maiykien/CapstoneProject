@@ -1,6 +1,7 @@
 
 -- Google Professional Data Analytics Certificate Capstone 
----
+
+
 title: "Case Study Bike Share Navigate Speedy"
 author: "Y Kien"
 date: "2024-07-22"

@@ -54,7 +54,7 @@ We will prepare/produce a report with the following deliverables:
 
   Can you click <a href= "https://github.com/maiykien/CapstoneProject/blob/main/Case-Study-Bike-Share-Navigate.Rmd"> here </a> to see my Analysis about my capstone project?
 
-Thank You For Watching My 
+Thank You For Watching My Analyis Project
 
 Case-Study-Bike-Share Navigate
 

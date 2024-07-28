@@ -1,0 +1,398 @@
+---
+title: "Case Study Bike Share Navigate Speedy"
+author: "Y Kien"
+date: "2024-07-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# Set CRAN mirror
+options(repos = c(CRAN = "https://cran.rstudio.com/"))
+```
+
+
+## Introduction about Bike-Share
+Welcome to the Cyclist bike-share analysis case study! In this case study, you work for a fictional company, Cyclist, along with some key team members. In order to answer the business questions, follow the steps of the data analysis process: Ask, Prepare, Process, Analyze, Share, and Act. Along the way, the Case Study Roadmap tables — including guiding questions and key tasks — will help you stay on the right path.
+
+## Scenario
+I'm a junior data analyst working on the marketing analyst team at Cyclistic, a bike-share. You are a junior data analyst working on the marketing analyst team at Cyclistic, a bike-share company in Chicago. The director of marketing believes the company’s future success
+depends on maximizing the number of annual memberships. Therefore, your team wants to understand how casual riders and annual members use Cyclistic bikes differently. From these insights, your team will design a new marketing strategy to convert casual riders into annual
+members. But first, Cyclistic executives must approve your recommendations, so they must be backed up with compelling data insights and professional data visualizations.
+
+## Preparation
+1. Three questions will guide the future marketing program:
+1. How do annual members and casual riders use Cyclist bikes differently?
+2. Why would casual riders buy Cyclistic annual memberships?
+3. How can Cyclistic use digital media to influence casual riders to become members?
+
+
+## Table of Contents
+ * 1. Introduction
+ * 2. Ask
+ * 3. Prepare
+ * 4. Process
+ * 5. Analyze
+ * 6. Share
+ * 7. Act
+ * 8. Conclusion
+ * 9. Appendices
+ 
+
+## Introduction
+Welcome to the Cylistic bike-share analysis case study! This case study is designed to provided you with hands-on experience in analyzing real-world data and deriving actionable insights that can drive business decision. We will assume the role of a junior data analyst working for a fictional company, Cylistic, alongside a team of dedicated professionals. My mission is to explore how different customer segments use Cyclistic's service and develop strategies to enhance customer engagement and profitability. 
+
+We will prepare/produce a report with the following deliverable: 
+  * 1. A clear statement of the business task
+  * 2. A description of all data sources used
+  * 3. Documentation of any cleaning or manipulation of data
+  * 4. A summary of your analysis
+  * 5. Supporting visualizations and key findings
+  * 6. Your top three recommendations based on your analysis
+  
+
+##======================================================================STEP 1: Ask 
+  * What is the problem you are trying to solve? 
+  - The problem we are trying to solve in the Cyclistic bike-share analysis case study is to understand how casual riders and annual member use cyclistic bikes differently. The goal is to derive insight from these difference to design en effective marketing strategy that will convert casual riders into annual memberships, Cysclistic aims to increase profitability and ensure systainable growth. 
+  
+
+## Prepare 
+
+  * Where is your data located?
+  
+  - I was save our data at the R Studio Project with the name is "Case Study Bike Share Navigate" and the Cylistic-bike-share data is typically organized in a series of CSV files, each representing different aspects of Bike trips. 
+
+  * Are there issues with bias or credibility in this data? Does your data ROCCC?
+  
+  - Bias: Data could be biased if it over represents certain user types or times of the year (e.g., more data from summer months when bike usage is higher).
+  
+  - Credibility: The data’s credibility depends on how it was collected and maintained. If it comes directly from Cyclist's systems, it is likely to be credible but should still be verified.
+  
+  - For ROCCC(Reliable, Original, Comprehensive, Current, Cited):
+  
+  -  Reliable with the Data should be consistent and trustworthy. 
+  - The data set come from the primary source(Cyclist's systems)
+  - Comprehensive:The data cover all necessary aspects of bike usage
+  - Current: the data should be up-to-date.
+  - Cited: Proper documentation of data sources.
+
+  * For the licensing, privacy, security, and accessibility? 
+  - Ensure the data usage complies with Cylistic's data sharing policies and any applicable local registration. 
+  
+  - They have enable to accessibility to all team members who need it, providing appropriate tools and formats for analysis.
+
+## Process
+  - The tools that I'm using for this project is R Studio.
+  - There has a lot of data set for this case study and I'm pretty sure about this data is integrity. 
+  - To ensuring data integrity and cleanliness is crucial for obtaining accurate and reliable insights from the Cyclistic bike-share data. 
+  - We have collected the data from the source directly from Cyclistic's systems to ensure it is reliable and original. 
+  - Also, I need to verify that all essential fields (e.g., Trip ID, Start Time, End Time, Start Station, End Station, Bike ID, User Type) are populated. 
+  
+  - We also need to verified that station names and IDs are consistent and valid.
+  
+  - Removed duplicated to prevent skewing the analysis.
+  - We will using R to handle missing values, correct inconsistencies, and remove duplicates. 
+  
+  - We can do the Date and Time consistency with ensure date and time field are in the same format and logically consistent (e.g., end times after start times)
+  
+  - Categorical Consistency: Verify that categorical values (e.g., user types, stations names) are consistent and free of typos. 
+ # Set CRAN mirror
+options(repos = c(CRAN = "https://cran.rstudio.com/"))
+
+
+#==========================
+```{ r undefined echo=FALSE}
+# Set CRAN mirror
+options(repos = c(CRAN = "https://cran.rstudio.com/"))
+
+``` 
+
+``` {r }
+# Install necessary packages
+install.packages("tidyverse")
+install.packages("janitor")
+install.packages("lubridate")
+install.packages("conflicted")
+
+# Load necessary libraries
+library(tidyverse)
+library(janitor)
+library(lubridate)
+library(conflicted)
+
+# Manage package conflicts
+conflict_prefer("filter", "dplyr")
+conflict_prefer("lag", "dplyr")
+
+#==========================
+# STEP 2: COLLECT DATA
+#==========================
+ 
+q1_2019 <- read_csv("Divvy_Trips_2019_Q1.csv")
+q1_2020 <- read_csv("Divvy_Trips_2020_Q1.csv")
+
+```
+#=====================================
+## ==================================================Step 2: WRANGLE DATA AND COMBINED INTO A SINGLE FILE
+#=====================================
+# Compare column names each of the files
+
+``` {r }
+  colnames(q1_2019)
+  colnames(q1_2020)
+  
+  head(q1_2019)
+  head(q1_2020)
+  
+  str(q1_2019)
+  str(q1_2020)
+
+# I will start to rename the columns to make them consistent with q1_2020 (as this going-forward table design for Divvy)
+  
+  (q1_2019 <- rename(q1_2019,
+                     ride_id=trip_id,
+                     rideable_type=bikeid,
+                     started_at=start_time,
+                     ended_at=end_time,
+                     start_station_name=from_station_name,
+                     start_station_id=from_station_id,
+                     end_station_name=to_station_name,
+                     end_station_id=to_station_id,
+                     member_casual=usertype))
+
+# Inspect the data frame and look for incongruities
+  
+  str(q1_2019)
+  str(q1_2020)
+  
+# Convert ride_id and rideable_type to character so that they can stack correctly
+    
+    q1_2019 <- mutate(q1_2019, ride_id=as.character(ride_id),
+                      rideable_type=as.character(rideable_type))
+    
+# I will merge the stack individual quarter's data frames into on big data frame
+all_trips <- bind_rows(q1_2019, q1_2020) #, q3_2019)#, q4_2019, q1_2020) 
+
+# We need to take a back up before starting cleaning process.
+
+backup_df <- all_trips
+
+# We also need to remove the lat, long, birthyear, and gender fields as this data was dropped beginning in 2020
+all_trips <- all_trips %>% 
+  select(-c(start_lat, start_lng, end_lat, end_lng, birthyear, gender, "tripduration"))  # using -c to vector to remove all the column with N/A or 
+View(all_trips) 
+
+```
+
+
+#============================================================================================
+##======================================================= STEP 3: CLEAN UP AND ADD DATA TO PREPARE FOR ANALYSIS
+#============================================================================================
+# Inspect the new table that has created
+
+
+##=========================================*=================================================
+## Coding on the R Studio to clean the data.   
+```{r Documentation of any cleaing or manipulation of data, echo=TRUE}
+  # We will list of the column names
+  colnames(all_trips)
+  # The columns name of the data is: 
+  ## ride_id
+  ## started_at
+  ## ended_at
+  ## rideable_type
+  ## start_station_id
+  ## start_station_name
+  ## end_station_id
+  ## end_station_name
+  ## member_casual
+  
+  # How many rows are in the data frame?
+  nrow(all_trips)
+  # They are having 791956 in the data frames.
+  # Dimensions on the data frame?
+  dim(all_trips)
+  # The dimensions is: 791956x10
+  head(all_trips)
+  # See the first 6 rows of data frames.
+  tail(all_trips)
+  #  See the last 6 rows of data frames.
+  # We will see the list of columns and data types (numeric, character, etc)
+  str(all_trips)
+  #Statistical summary of data. Mainly for numeric. 
+  summary(all_trips)
+```
+
+##=================================== STEP 4 ANALYZE & SHARE AFTER CLEAN AND PREPARE DATA =======================
+
+# Begin to the desired values (we will go with the current 2020 labels)
+``` {r }  
+table(all_trips$member_casual)
+
+# Reassign to desired values (we will go with the current 2020 label)
+  # Using the function with the name is re code. 
+  all_trips <- all_trips %>%
+    mutate(member_casual=recode(member_casual,
+                                 "Subscriber"="member",
+                                 "Customer"="casual"))
+
+  # This is reassign the name of the column of the all_trips dataset
+  # We can recheck to see what is the code look like: 
+    
+  table(all_trips$member_casual)
+  
+  # Now we will want to add the columns that list the date, month, day, and year of each ride.
+  # This will allow us to aggregate ride data for each month, day, or year ... before completing these operations we could only aggregate at the ride level. 
+```
+# Adding New Columns
+  ## New column such as: month, day, year, and day_of_weeK before processing to aggregate the ride level. 
+  
+  # We will use the function as.Date to convert
+  all_trips$date <- as.Date(all_trips$started_at) # And the default format is yyyy-mm-dd
+  all_trips$month <- format(as.Date(all_trips$date),"%m")
+  
+  all_trips$day <- format(as.Date(all_trips$date),"%d")
+  
+  all_trips$year <- format(as.Date(all_trips$date), "%Y")
+  
+  all_trips$day_of_week <- format(as.Date(all_trips$date), "%A")
+```{r echo=FALSE}
+  # We will want to add the "ride_length" calculation to all_trips(in second)
+  # Using the difftime to calculation to all_trips (in second)
+  
+  all_trips$ride_length <- difftime(all_trips$ended_at, all_trips$started_at)
+  
+  # Now we will inspect the structure of the column
+  str(all_trips)
+```
+##=========================================*=============================================
+``` {r convert ride length from Factor to numeric}
+  ## Covert Ride Length From Factor to Numeric
+  is.factor(all_trips$ride_length)
+```
+
+# The trip duration is converted to numeric already
+```{r }
+  all_trips$ride_length <-       as.numeric(as.character(all_trips$ride_length))
+  is.numeric(all_trips$ride_length)
+  #This is will convert all these number to numeric.
+```
+
+##=========================================*====================================
+## Create this Data Frame 2 to Remove the "BAD" data
+```{r create_dataframe_2, echo=TRUE}
+
+all_trips_v2 <- all_trips[!(all_trips$start_station_name == "HQ QR" | all_trips$ride_length < 0),]
+
+# Ensure 'day_of_week' is correctly created and populated
+all_trips_v2$day_of_week <- weekdays(as.Date(all_trips_v2$started_at))
+
+##=========================================*====================
+
+##=========================================*====================
+## STEP4: CONDUCT DESCRIPTIVE ANALYSIS
+#================================
+# Descriptive analysis on ride_length (all figures in seconds)
+mean(all_trips_v2$ride_length) # straight average (total ride length/ride)
+median(all_trips_v2$ride_length) # midpoint number in the ascending array of ride lengths
+max(all_trips_v2$ride_length)
+min(all_trips_v2$ride_length)
+
+# If we want to save us time, we can use the summary() function
+summary(all_trips_v2$ride_length)
+
+# Compare between the value for ride_length and member_casual
+aggregate_mean <- aggregate(ride_length ~ member_casual, data = all_trips_v2, FUN = mean)
+aggregate_median <- aggregate(ride_length ~ member_casual, data = all_trips_v2, FUN = median)
+aggregate_max <- aggregate(ride_length ~ member_casual, data = all_trips_v2, FUN = max)
+aggregate_min <- aggregate(ride_length ~ member_casual, data = all_trips_v2, FUN = min)
+
+aggregate_each_day <- aggregate(ride_length ~ member_casual + day_of_week, data = all_trips_v2, FUN = mean)
+
+# Fixing the order of days of the week
+all_trips_v2$day_of_week <- factor(all_trips_v2$day_of_week, levels = c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"), ordered = TRUE)
+
+# Re-running the average ride time by each day for members vs casual users
+aggregate_each_day <- aggregate(ride_length ~ member_casual + day_of_week, data = all_trips_v2, FUN = mean)
+
+print(aggregate_each_day)
+
+```
+
+##=========================================*=================================================##
+```{r for analyza ridership, echo=TRUE}
+  # We will analyze ridership data by type and weekday
+all_trips_v2 %>% 
+  mutate(weekday=wday(started_at, label=TRUE)) %>% # Creates the week field by using wday()
+  group_by(member_casual, weekday) %>%  #groups by usertype and weekday
+  summarise(number_of_rides=n() # calculates the number of rides and average duration
+            ,average_duration = mean(ride_length)) %>% # calculates the average duration
+  arrange(member_casual, weekday) # sorts
+  
+print(weekdays)  
+
+```
+
+##=========================================***=================================================
+## Including Plots
+## The plot showing the number_of_rides V.s weekday
+  ### The plot showing the average_duration V.s weekday 
+
+```{r pressure, echo=FALSE}
+all_trips_v2 %>% 
+  mutate(weekday=wday(started_at, label=TRUE)) %>%
+  group_by(member_casual, weekday) %>% 
+  summarise(number_of_rides = n(), average_duration = mean(ride_length)) %>%   arrange(member_casual, weekday) %>% 
+  ggplot(mapping=(aes(x=weekday, y=number_of_rides, fill=member_casual))) + geom_col(position = "dodge")
+
+
+## 
+  # We also create a visualization for average duration 
+all_trips_v2 %>% 
+  mutate(weekday=wday(started_at, label=TRUE)) %>%
+  group_by(member_casual, weekday) %>% 
+  summarise(number_of_rides = n(), average_duration = mean(ride_length)) %>%   arrange(member_casual, weekday) %>%
+  ggplot(mapping=aes(x=weekday, y=average_duration, fill=member_casual)) + geom_col(position="dodge")
+  
+```
+
+## ================================ STEP 6 ACT & KEY TAKEAWAY ===============================
+
+# Key Takeaways
+- The chart is showing the most of annual member interesting with bike program for the weekday and particular is "Tuesday"
+
+- Annual member have taken more trip than the casual member. 
+
+- The number of the ride for the annual member highest in the weekday and particular is Tuesday and Thursday.
+
+- The number of ride for both casual and manual member has been decreased on the weekends. 
+
+- As we can see the chart on the average duration, surprise when we saw the casual customer has the longer trip than the annual member.
+
+- Also, the volume for the casual member choosing to rent the bike for every Thursday and Friday. 
+
+# Recomendations
+
+- Using targets advertising by using social media, local news outlets, and community events to highlight the benefits of bike-sharing.
+
+- Share the testimonials and case studies from existing annual members about how bike-sharing has benefited them. 
+- Offer discounted rates for the first year of membership.
+
+- Partner with local businesses to provide discounted membership for employees. 
+
+# Convincing Casual Customers to Switch to Annual Memberships
+
+- Cost Savings: Clearly communicate the cost savings of an annual membership compared to frequent casual usage.
+
+- Convenience: Highlight the convenience of not having to worry about payment each time they use a bike.
+
+- Special Promotions: Offer limited-time promotions or bonuses for upgrading to an annual membership.
+
+- Personalized Communication: Use data to send personalized messages to casual users, showing how much they could save or benefit from an annual membership based on their usage patterns.
+
+##=========================================*=================================================#
+## We will Export Summary File For Futher Analysis.
+``` {r Export this file to CSV for Further Analysis}
+  count <- aggregate(all_trips_v2$ride_length ~ all_trips_v2$member_casual + all_trips_v2$day_of_week, FUN=mean)
+  write.csv(count, file = 'avg_ride_length.csv')
+```

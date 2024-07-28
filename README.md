@@ -42,9 +42,9 @@ members. But first, Cyclistic executives must approve your recommendations, so t
  
 
 ## Introduction
-Welcome to the Cylistic bike-share analysis case study! This case study is designed to provided you with hands-on experience in analyzing real-world data and deriving actionable insights that can drive business decision. We will assume the role of a junior data analyst working for a fictional company, Cylistic, alongside a team of dedicated professionals. My mission is to explore how different customer segments use Cyclistic's service and develop strategies to enhance customer engagement and profitability. 
+Welcome to the Cylistic bike-share analysis case study! This case study is designed to provide you with hands-on experience in analyzing real-world data and deriving actionable insights that can drive business decisions. We will assume the role of a junior data analyst working for a fictional company, Cylistic, alongside a team of dedicated professionals. I aim to explore how different customer segments use Cyclistic's service and develop strategies to enhance customer engagement and profitability. 
 
-We will prepare/produce a report with the following deliverable: 
+We will prepare/produce a report with the following deliverables: 
   * 1. A clear statement of the business task
   * 2. A description of all data sources used
   * 3. Documentation of any cleaning or manipulation of data
@@ -52,8 +52,9 @@ We will prepare/produce a report with the following deliverable:
   * 5. Supporting visualizations and key findings
   * 6. Your top three recommendations based on your analysis
 
-  Can you click <a href= "https://github.com/maiykien/CapstoneProject/blob/main/Case-Study-Bike-Share-Navigate.Rmd"> here </a> to see my Analysis about my capstone project? 
+  Can you click <a href= "https://github.com/maiykien/CapstoneProject/blob/main/Case-Study-Bike-Share-Navigate.Rmd"> here </a> to see my Analysis about my capstone project?
 
+Thank You For Watching My 
 
 Case-Study-Bike-Share Navigate
 

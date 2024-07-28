@@ -5,7 +5,6 @@
 title: "Case Study Bike Share Navigate Speedy"
 author: "Y Kien Mai"
 date: "2024-07-22"
-output: html_document
 ---
 
 
